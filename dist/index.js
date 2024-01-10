@@ -162,24 +162,39 @@ function Slider(props) {
         // update slide by parent
         setSlide(options.index, false, true);
     }
+    // method to check no slider
+    var checkNoSlider = function () {
+        if (!outerRef.current) {
+            return false;
+        }
+        var style = getComputedStyle(outerRef.current);
+        var state = style === null || style === void 0 ? void 0 : style.content.includes('no-slider');
+        setDisabled(state);
+        return state;
+    };
     // effect on mount
     (0, react_1.useEffect)(function () {
         // resize event listener
         window.addEventListener('resize', function () {
-            // set slide without animating while resize flag enabled
-            setResizing(true);
-            setSlide();
-            setTimeout(function () { return setResizing(false); }, 100);
-            // display child elements without slider by checking content
-            if (outerRef.current) {
-                var style = getComputedStyle(outerRef.current);
-                setDisabled(style === null || style === void 0 ? void 0 : style.content.includes('no-slider'));
+            // check no slider
+            if (!checkNoSlider()) {
+                // set slide without animating while resize flag enabled
+                setResizing(true);
+                setSlide();
+                setTimeout(function () { return setResizing(false); }, 100);
             }
         });
-        // set initial slide
-        setSlide(index);
-        // wait until slider snap to initial slide without animating
-        setTimeout(function () { return setInit(true); }, 30);
+        // check no slider
+        if (checkNoSlider()) {
+            // immediate init
+            setInit(true);
+        }
+        else {
+            // set initial slide
+            setSlide(index);
+            // wait until slider snap to initial slide without animating
+            setTimeout(function () { return setInit(true); }, 30);
+        }
     }, []);
     // slider dom
     return disabled ? (react_1.default.createElement("div", { className: options.className, ref: outerRef }, options.children)) : (react_1.default.createElement("div", { style: style_1.outerCSS, ref: outerRef, className: options.className, onMouseDown: onDown, onTouchStart: onDown, onMouseUp: onUp, onMouseLeave: onUp, onTouchEnd: onUp, onTouchCancel: onUp, onMouseMove: function (event) { return isDragging && draggable && onDrag(event); }, onTouchMove: function (event) { return isDragging && draggable && onDrag(event); }, role: "menuitem", tabIndex: 0 },

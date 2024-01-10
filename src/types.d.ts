@@ -8,7 +8,7 @@ export type SliderAlignmentType = 'left' | 'center' | 'right'
 export type SliderType = {
   /** Custom class name for slider container */
   className?: string
-  /** All child element */
+  /** All child elements */
   children: JSX.Element | JSX.Element[] | undefined
   /** Current slide index */
   index: number

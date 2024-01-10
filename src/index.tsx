@@ -109,24 +109,36 @@ export default function Slider(props: SliderType): JSX.Element {
     // update slide by parent
     setSlide(options.index, false, true)
   }
+  // method to check no slider
+  const checkNoSlider = () => {
+    if (!outerRef.current) { return false }
+    const style = getComputedStyle(outerRef.current as any)
+    const state = style?.content.includes('no-slider')
+    setDisabled(state)
+    return state
+  }
   // effect on mount
   useEffect(() => {
     // resize event listener
     window.addEventListener('resize', () => {
-      // set slide without animating while resize flag enabled
-      setResizing(true)
-      setSlide()
-      setTimeout(() => setResizing(false), 100)
-      // display child elements without slider by checking content
-      if (outerRef.current) {
-        const style = getComputedStyle(outerRef.current as any)
-        setDisabled(style?.content.includes('no-slider'))
+      // check no slider
+      if (!checkNoSlider()) {
+        // set slide without animating while resize flag enabled
+        setResizing(true)
+        setSlide()
+        setTimeout(() => setResizing(false), 100)
       }
     })
-    // set initial slide
-    setSlide(index)
-    // wait until slider snap to initial slide without animating
-    setTimeout(() => setInit(true), 30)
+    // check no slider
+    if (checkNoSlider()) {
+      // immediate init
+      setInit(true)
+    } else {
+      // set initial slide
+      setSlide(index)
+      // wait until slider snap to initial slide without animating
+      setTimeout(() => setInit(true), 30)
+    }
   }, [])
   // slider dom
   return disabled ? (
