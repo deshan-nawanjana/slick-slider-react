@@ -21,9 +21,9 @@ function App() {
 
 ## Slider Options
 
-Following options can br provided to the `<Slider>` component to change it's default configuration.
+Following options can be provided to the `<Slider>` component to change it's default configuration.
 
-`index`, `onSlide` and `children` options are required.
+`index`, `onSlide` and `children` are required.
 
 | Option       | Type                    |  Default | Description                                                                             |
 | ------------ | ----------------------- | :------: | --------------------------------------------------------------------------------------- |
@@ -52,7 +52,7 @@ Look at the following syntax written in tailwind CSS.
 </Slider>
 ```
 
-# Switch to No-Slider Mode
+## Switch to No-Slider Mode
 
 If you need to make the slider items appear as normal list of elements without sliding effect, you can put `no-slider` as the `css-content` on slider style using css `@media` rule. This rule will be checked when window resizes.
 
