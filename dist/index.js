@@ -54,7 +54,6 @@ function Slider(props) {
     var draggable = options.draggable;
     var dragCallback = options.dragCallback;
     var dragOutbound = options.dragOutbound;
-    var dragFactor = options.dragFactor;
     // array of child elements
     var children = Array.isArray(props === null || props === void 0 ? void 0 : props.children) ? props === null || props === void 0 ? void 0 : props.children : [props === null || props === void 0 ? void 0 : props.children];
     // refs for elements
@@ -65,7 +64,7 @@ function Slider(props) {
     var _a = (0, react_1.useState)(options.index || 0), index = _a[0], setIndex = _a[1];
     var _b = (0, react_1.useState)(0), position = _b[0], setPosition = _b[1];
     var _c = (0, react_1.useState)({ cursorX: 0, scrollY: 0, position: 0 }), origin = _c[0], setOrigin = _c[1];
-    var _d = (0, react_1.useState)('none'), direction = _d[0], setDirection = _d[1];
+    var _d = (0, react_1.useState)({ originX: 0, cursorX: 0, direction: 'none' }), direction = _d[0], setDirection = _d[1];
     var _e = (0, react_1.useState)(false), isDragging = _e[0], setDragging = _e[1];
     var _f = (0, react_1.useState)(false), isResizing = _f[0], setResizing = _f[1];
     var _g = (0, react_1.useState)(false), isScrolling = _g[0], setScrolling = _g[1];
@@ -89,12 +88,13 @@ function Slider(props) {
         else {
             setDragging(true);
         }
+        // get positions
+        var cursorX = (0, getEventData_1.getEventData)(event).screenX;
+        var scrollY = (_a = document === null || document === void 0 ? void 0 : document.documentElement) === null || _a === void 0 ? void 0 : _a.scrollTop;
         // store origin values
-        setOrigin({
-            cursorX: (0, getEventData_1.getEventData)(event).screenX,
-            scrollY: (_a = document === null || document === void 0 ? void 0 : document.documentElement) === null || _a === void 0 ? void 0 : _a.scrollTop,
-            position: position
-        });
+        setOrigin({ cursorX: cursorX, scrollY: scrollY, position: position });
+        // store direction values
+        setDirection({ originX: cursorX, cursorX: cursorX, direction: 'none' });
     };
     // event on cursor up
     var onUp = function () {
@@ -120,12 +120,24 @@ function Slider(props) {
         }
         // get slider data
         var data = getData();
-        // get drag difference
-        var dragGap = origin.cursorX - ((_b = (0, getEventData_1.getEventData)(event)) === null || _b === void 0 ? void 0 : _b.screenX);
+        // get cursor x position
+        var cursorX = (_b = (0, getEventData_1.getEventData)(event)) === null || _b === void 0 ? void 0 : _b.screenX;
+        // get gap direction
+        var gapDirection = direction.cursorX > cursorX ? 'left' : 'right';
+        // get origin
+        var dirOrigin = gapDirection === direction.direction
+            ? direction.originX
+            : cursorX;
         // update direction
-        setDirection(Math.abs(dragGap) > dragFactor ? dragGap > 0 ? 'left' : 'right' : 'none');
+        setDirection({
+            originX: dirOrigin,
+            cursorX: cursorX,
+            direction: gapDirection
+        });
+        // get total drag difference
+        var dragGapT = origin.cursorX - cursorX;
         // get current position
-        var position = (0, getPositionByBound_1.getPositionByBound)(origin.position - dragGap, data, dragOutbound);
+        var position = (0, getPositionByBound_1.getPositionByBound)(origin.position - dragGapT, data, dragOutbound);
         // set position
         setPosition(position);
         // callback to parent
@@ -197,7 +209,7 @@ function Slider(props) {
         }
     }, []);
     // slider dom
-    return disabled ? (react_1.default.createElement("div", { className: options.className, ref: outerRef }, options.children)) : (react_1.default.createElement("div", { style: style_1.outerCSS, ref: outerRef, className: options.className, onMouseDown: onDown, onTouchStart: onDown, onMouseUp: onUp, onMouseLeave: onUp, onTouchEnd: onUp, onTouchCancel: onUp, onMouseMove: function (event) { return isDragging && draggable && onDrag(event); }, onTouchMove: function (event) { return isDragging && draggable && onDrag(event); }, role: "menuitem", tabIndex: 0 },
+    return disabled ? (react_1.default.createElement("div", { className: options.className, ref: outerRef }, options.children)) : (react_1.default.createElement("div", { style: style_1.outerCSS, ref: outerRef, className: options.className, onMouseDown: onDown, onTouchStart: onDown, onMouseUp: onUp, onMouseLeave: onUp, onTouchEnd: onUp, onTouchCancel: onUp, onMouseMove: function (event) { return isDragging && draggable && onDrag(event); }, onTouchMove: function (event) { return isDragging && draggable && onDrag(event); } },
         react_1.default.createElement("div", { ref: innerRef, style: __assign({ transform: "translateX(".concat(position, "px)"), transitionDuration: "".concat(snapDuration / 1000, "s"), transitionProperty: shouldAnimate ? 'transform' : 'none' }, style_1.innerCSS) }, children.map(function (child, childIndex) { return (react_1.default.createElement("div", { key: "".concat(childIndex.toString()), ref: function (element) { childRef.current[childIndex] = element; }, style: style_1.childCSS }, child)); }))));
 }
 exports.default = Slider;

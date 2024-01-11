@@ -1,6 +1,6 @@
 {
   "name": "slick-slider-react",
-  "version": "1.0.9",
+  "version": "2.0.0",
   "description": "Horizontal Items Slider for React",
   "homepage": "https://deshan-nawanjana.github.io/slick-slider-react/",
   "main": "dist/index.js",

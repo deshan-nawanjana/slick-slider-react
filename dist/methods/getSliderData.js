@@ -23,7 +23,11 @@ var getSliderData = function (refs, props, direction) {
     // get input prop values
     var alignment = props.alignment;
     var dragFactor = props.dragFactor;
-    var directionFactor = { left: 1, right: -1, none: 0 }[direction];
+    // get drag amount and direction
+    var dragAmount = direction.originX - direction.cursorX;
+    var dragDirection = Math.abs(dragAmount) > dragFactor
+        ? dragAmount > 0 ? 'left' : 'right' : 'none';
+    var directionFactor = { left: 1, right: -1, none: 0 }[dragDirection];
     // get client rects for all refs
     var outerBound = refs.outer.current.getBoundingClientRect();
     var innerBound = refs.inner.current.getBoundingClientRect();

@@ -1,6 +1,3 @@
-/** Slider dragging direction by the user */
-export type SliderDirectionType = 'left' | 'right' | 'none'
-
 /** Slider attach alignment */
 export type SliderAlignmentType = 'left' | 'center' | 'right'
 
@@ -79,4 +76,14 @@ export type SliderOriginType = {
   scrollY: number
   /** Slider position on drag start */
   position: number
+}
+
+/** Slider dragging direction values by the user */
+export type SliderDirectionType = {
+  /** Current cursor position */
+  cursorX: number
+  /** Drag start position to direction */
+  originX: number
+  /** Dragging direction */
+  direction: 'left' | 'right' | 'none'
 }

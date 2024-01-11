@@ -27,7 +27,11 @@ export const getSliderData = (
   // get input prop values
   const alignment = props.alignment as SliderAlignmentType
   const dragFactor = props.dragFactor as number
-  const directionFactor = { left: 1, right: -1, none: 0 }[direction] as any
+  // get drag amount and direction
+  const dragAmount = direction.originX - direction.cursorX
+  const dragDirection = Math.abs(dragAmount) > dragFactor
+    ? dragAmount > 0 ? 'left' : 'right' : 'none'
+  const directionFactor = { left: 1, right: -1, none: 0 }[dragDirection] as any
   // get client rects for all refs
   const outerBound = refs.outer.current.getBoundingClientRect() as DOMRect
   const innerBound = refs.inner.current.getBoundingClientRect() as DOMRect

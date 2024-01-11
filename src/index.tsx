@@ -20,7 +20,6 @@ export default function Slider(props: SliderType): JSX.Element {
   const draggable = options.draggable as boolean
   const dragCallback = options.dragCallback as boolean
   const dragOutbound = options.dragOutbound as boolean
-  const dragFactor = options.dragFactor as number
   // array of child elements
   const children = Array.isArray(props?.children) ? props?.children : [props?.children]
   // refs for elements
@@ -31,7 +30,7 @@ export default function Slider(props: SliderType): JSX.Element {
   const [index, setIndex] = useState<number>(options.index || 0)
   const [position, setPosition] = useState<number>(0)
   const [origin, setOrigin] = useState<SliderOriginType>({ cursorX: 0, scrollY: 0, position: 0 })
-  const [direction, setDirection] = useState<SliderDirectionType>('none')
+  const [direction, setDirection] = useState<SliderDirectionType>({ originX: 0, cursorX: 0, direction: 'none' })
   const [isDragging, setDragging] = useState<boolean>(false)
   const [isResizing, setResizing] = useState<boolean>(false)
   const [isScrolling, setScrolling] = useState<boolean>(false)
@@ -49,12 +48,13 @@ export default function Slider(props: SliderType): JSX.Element {
   const onDown = (event: React.MouseEvent | React.TouchEvent) => {
     // update dragging state
     if (!draggable) { return } else { setDragging(true) }
+    // get positions
+    const cursorX = getEventData(event).screenX
+    const scrollY = document?.documentElement?.scrollTop
     // store origin values
-    setOrigin({
-      cursorX: getEventData(event).screenX,
-      scrollY: document?.documentElement?.scrollTop,
-      position
-    })
+    setOrigin({ cursorX, scrollY, position })
+    // store direction values
+    setDirection({ originX: cursorX, cursorX, direction: 'none' })
   }
   // event on cursor up
   const onUp = () => {
@@ -75,12 +75,24 @@ export default function Slider(props: SliderType): JSX.Element {
     }
     // get slider data
     const data = getData()
-    // get drag difference
-    const dragGap = origin.cursorX - getEventData(event)?.screenX
+    // get cursor x position
+    const cursorX = getEventData(event)?.screenX
+    // get gap direction
+    const gapDirection = direction.cursorX > cursorX ? 'left' : 'right'
+    // get origin
+    const dirOrigin = gapDirection === direction.direction
+      ? direction.originX
+      : cursorX
     // update direction
-    setDirection(Math.abs(dragGap) > dragFactor ? dragGap > 0 ? 'left' : 'right' : 'none')
+    setDirection({
+      originX: dirOrigin,
+      cursorX,
+      direction: gapDirection
+    })
+    // get total drag difference
+    const dragGapT = origin.cursorX - cursorX
     // get current position
-    const position = getPositionByBound(origin.position - dragGap, data, dragOutbound)
+    const position = getPositionByBound(origin.position - dragGapT, data, dragOutbound)
     // set position
     setPosition(position)
     // callback to parent
@@ -157,9 +169,7 @@ export default function Slider(props: SliderType): JSX.Element {
       onTouchEnd={onUp}
       onTouchCancel={onUp}
       onMouseMove={event => isDragging && draggable && onDrag(event)}
-      onTouchMove={event => isDragging && draggable && onDrag(event)}
-      role="menuitem"
-      tabIndex={0}>
+      onTouchMove={event => isDragging && draggable && onDrag(event)}>
       <div
         ref={innerRef}
         style={{
