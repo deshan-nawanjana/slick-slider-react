@@ -1,4 +1,4 @@
-import {
+import type {
   SliderAlignmentType,
   SliderDataType,
   SliderDirectionObjectType,
@@ -35,7 +35,7 @@ export const getSliderData = (
   // get client rects for all refs
   const outerBound = refs.outer.current.getBoundingClientRect() as DOMRect
   const innerBound = refs.inner.current.getBoundingClientRect() as DOMRect
-  const childBound = refs.child.current.map(child => child?.getBoundingClientRect()).filter(item => !!item) as DOMRect[]
+  const childBound = refs.child.current.map(child => child?.getBoundingClientRect()) as DOMRect[]
   // get outer padding values
   const outerStyle = getComputedStyle(refs.outer.current)
   const outerPadLF = parseFloat(outerStyle.paddingLeft)
