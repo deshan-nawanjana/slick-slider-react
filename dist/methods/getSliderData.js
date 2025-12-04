@@ -31,7 +31,7 @@ var getSliderData = function (refs, props, direction) {
     // get client rects for all refs
     var outerBound = refs.outer.current.getBoundingClientRect();
     var innerBound = refs.inner.current.getBoundingClientRect();
-    var childBound = refs.child.current.map(function (child) { return child === null || child === void 0 ? void 0 : child.getBoundingClientRect(); });
+    var childBound = refs.child.current.map(function (child) { return child === null || child === void 0 ? void 0 : child.getBoundingClientRect(); }).filter(function (item) { return !!item; });
     // get outer padding values
     var outerStyle = getComputedStyle(refs.outer.current);
     var outerPadLF = parseFloat(outerStyle.paddingLeft);
