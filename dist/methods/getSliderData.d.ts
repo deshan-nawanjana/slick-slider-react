@@ -1,4 +1,4 @@
-import { SliderDataType, SliderDirectionType, SliderRefsType, SliderType } from "../types";
+import type { SliderDataType, SliderDirectionType, SliderRefsType, SliderType } from "../types";
 /**
  * Calculates targets and bound values to translate the slider
  *

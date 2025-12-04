@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import { SliderDirectionType, SliderOriginType, SliderType } from "./types"
+import type { SliderDirectionType, SliderOriginType, SliderType } from "./types"
 import { getInputValues } from "./methods/getInputValues"
 import { getSliderData } from "./methods/getSliderData"
 import { getEventData } from "./methods/getEventData"
@@ -104,6 +104,8 @@ export default function Slider(props: SliderType): JSX.Element {
     const data = getData()
     // return if no data
     if (!data) { return }
+    // return and reset if no stops
+    if (!data.stops.length) { return }
     // get param values
     const resultIndex = typeof slideIndex === 'number' ? slideIndex : data.index
     const resultCallback = typeof callback === 'boolean' ? callback : true
@@ -152,6 +154,15 @@ export default function Slider(props: SliderType): JSX.Element {
       setTimeout(() => setInit(true), 30)
     }
   }, [])
+  // effect on child list change
+  useEffect(() => {
+    // find any invalid child elements
+    const isNull = childRef.current.some(item => !item)
+    // filter unavailable child elements
+    childRef.current = childRef.current.filter(item => !!item)
+    // reload slider on elements change
+    if (isNull) { setSlide() }
+  }, [props.children])
   // slider dom
   return disabled ? (
     <div className={options.className} ref={outerRef}>

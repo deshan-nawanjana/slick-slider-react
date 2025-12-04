@@ -1,4 +1,4 @@
-import { SliderDataType } from "../types"
+import type { SliderDataType } from "../types"
 
 /**
  * Calculate possible slider position by bound values

@@ -1,4 +1,4 @@
-import { SliderType } from "../types"
+import type { SliderType } from "../types"
 
 /**
  * Get slider props configuration object with default values

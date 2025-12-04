@@ -1,5 +1,5 @@
 /// <reference types="react" />
-import { SliderType } from "./types";
+import type { SliderType } from "./types";
 /**
  * Slider component
  */

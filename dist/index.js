@@ -153,6 +153,10 @@ function Slider(props) {
         if (!data) {
             return;
         }
+        // return and reset if no stops
+        if (!data.stops.length) {
+            return;
+        }
         // get param values
         var resultIndex = typeof slideIndex === 'number' ? slideIndex : data.index;
         var resultCallback = typeof callback === 'boolean' ? callback : true;
@@ -208,6 +212,17 @@ function Slider(props) {
             setTimeout(function () { return setInit(true); }, 30);
         }
     }, []);
+    // effect on child list change
+    (0, react_1.useEffect)(function () {
+        // find any invalid child elements
+        var isNull = childRef.current.some(function (item) { return !item; });
+        // filter unavailable child elements
+        childRef.current = childRef.current.filter(function (item) { return !!item; });
+        // reload slider on elements change
+        if (isNull) {
+            setSlide();
+        }
+    }, [props.children]);
     // slider dom
     return disabled ? (react_1.default.createElement("div", { className: options.className, ref: outerRef }, options.children)) : (react_1.default.createElement("div", { style: style_1.outerCSS, ref: outerRef, className: options.className, onMouseDown: onDown, onTouchStart: onDown, onMouseUp: onUp, onMouseLeave: onUp, onTouchEnd: onUp, onTouchCancel: onUp, onMouseMove: function (event) { return isDragging && draggable && onDrag(event); }, onTouchMove: function (event) { return isDragging && draggable && onDrag(event); } },
         react_1.default.createElement("div", { ref: innerRef, style: __assign({ transform: "translateX(".concat(position, "px)"), transitionDuration: "".concat(snapDuration / 1000, "s"), transitionProperty: shouldAnimate ? 'transform' : 'none' }, style_1.innerCSS) }, children.map(function (child, childIndex) { return (react_1.default.createElement("div", { key: "".concat(childIndex.toString()), ref: function (element) { childRef.current[childIndex] = element; }, style: style_1.childCSS }, child)); }))));
