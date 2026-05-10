@@ -66,18 +66,18 @@ Look at the following syntax written in tailwind CSS.
 
 ### Developed by Deshan Nawanjana
 
-[Home](https://deshan.lk/)
-&ensp;|&ensp;
-[DNJS](https://dnjs.info/)
+[Deshan.lk](https://deshan.lk/)
 &ensp;|&ensp;
 [LinkedIn](https://www.linkedin.com/in/deshan-nawanjana/)
 &ensp;|&ensp;
-[GitHub](https://github.com/deshan-nawanjana)
-&ensp;|&ensp;
-[YouTube](https://www.youtube.com/channel/UCfqOF8_UTa6LhaujoFETqlQ)
-&ensp;|&ensp;
-[Blogger](https://dn-w.blogspot.com/)
-&ensp;|&ensp;
 [Facebook](https://www.facebook.com/mr.dnjs)
 &ensp;|&ensp;
-[Gmail](mailto:deshan.uok@gmail.com)
+[GitHub](https://github.com/deshan-nawanjana)
+&ensp;|&ensp;
+[YouTube](https://www.youtube.com/@deshan-nawanjana)
+&ensp;|&ensp;
+[X](https://x.com/DeshanNawanjana)
+&ensp;|&ensp;
+[Instagram](https://www.instagram.com/_d.boy_/)
+&ensp;|&ensp;
+[Reddit](https://www.reddit.com/user/DeshanNawanjana/)
