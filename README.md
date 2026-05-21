@@ -3,7 +3,7 @@ React Slick Slider is a React component library to easily create horizontal caro
 
 ## Installation
 
-Add Slick Slider React package into your project.
+Add `slick-slider-react` package into your project.
 
 ```bash
 npm i slick-slider-react
