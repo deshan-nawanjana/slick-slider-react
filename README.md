@@ -1,5 +1,13 @@
 # Slick Slider React
-Horizontal Items Slider for React
+React Slick Slider is a React component library to easily create horizontal carousel sliders. This lightweight library comes with various customization features such as alignment, duration, user interactive behavior, and more. Slick Slider React smoothly works with all browsers with no extra dependencies.
+
+## Installation
+
+Add Slick Slider React package into your project.
+
+```bash
+npm i slick-slider-react
+```
 
 ## Basic Usage
 
